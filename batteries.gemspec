@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/adam12/batteries"
   spec.license = "MIT"
 
-  spec.files = ["README.md", "Rakefile"] + Dir["lib/**/*.rb"]
+  spec.files = ["README.md", "LICENSE.txt"] + Dir["lib/**/*.rb"]
 
   spec.add_development_dependency "rubygems-tasks", "~> 0.2"
 end
