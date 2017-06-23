@@ -65,7 +65,7 @@ module Batteries
         require "logger"
         requires.each { |f| require f }
         Sequel.extension :migration
-        DB.loggers << Logger.new(STDOUT)
+        DB.loggers << Logger.new($stdout)
         Sequel::Migrator.apply(DB, migrations_path, version)
       end
     end
