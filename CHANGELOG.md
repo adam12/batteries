@@ -3,3 +3,4 @@
 - Don't require inside migration tasks
 - Configurable database constant
 - Configurable tasks setup macro
+- Configure individual tasks from global block
