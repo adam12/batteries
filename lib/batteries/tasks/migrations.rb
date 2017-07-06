@@ -5,11 +5,12 @@ require "rake/tasklib"
 module Batteries
   module Tasks
     class Migrations < ::Rake::TaskLib
-      attr_accessor :migrations_path, :requires
+      attr_accessor :migrations_path, :requires, :database
 
       def initialize
         @migrations_path = "migrate"
         @requires = ["./db"]
+        @database = DB if defined?(DB)
 
         yield self if block_given?
 
@@ -65,8 +66,8 @@ module Batteries
         require "logger"
         requires.each { |f| require f }
         Sequel.extension :migration
-        DB.loggers << Logger.new($stdout)
-        Sequel::Migrator.apply(DB, migrations_path, version)
+        database.loggers << Logger.new($stdout)
+        Sequel::Migrator.apply(database, migrations_path, version)
       end
     end
   end
