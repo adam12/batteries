@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 require "rake"
 require "rake/tasklib"
+require "logger"
 
 module Batteries
   module Tasks
     class Migrations < ::Rake::TaskLib
-      attr_accessor :migrations_path, :database
+      attr_accessor :migrations_path, :database, :logger
 
       def initialize
         @migrations_path = "migrate"
         @database = DB if defined?(DB)
+        @logger = Logger.new($stdout)
 
         yield self if block_given?
 
@@ -61,9 +63,8 @@ module Batteries
       end
 
       def migrate(env, version)
-        require "logger"
         Sequel.extension :migration
-        database.loggers << Logger.new($stdout)
+        database.loggers << logger if logger
         Sequel::Migrator.apply(database, migrations_path, version)
       end
     end
