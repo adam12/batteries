@@ -61,7 +61,6 @@ module Batteries
       end
 
       def migrate(env, version)
-        ENV["RACK_ENV"] = env
         require "logger"
         Sequel.extension :migration
         database.loggers << Logger.new($stdout)
