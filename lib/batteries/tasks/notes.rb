@@ -7,11 +7,11 @@ module Batteries
     class Notes < ::Rake::TaskLib
       attr_accessor :name, :description, :excluded_dirs, :matchers
 
-      def initialize(name = :notes)
-        @name           = name
-        @description    = "Notes"
-        @excluded_dirs  = %w(node_modules public)
-        @matchers       = %w(FIXME TODO)
+      def initialize(name = :notes, options: {})
+        @name           = options[:name] || name
+        @description    = options.fetch(:description)   { "Notes" }
+        @excluded_dirs  = options.fetch(:excluded_dirs) { %w(node_modules public) }
+        @matchers       = options.fetch(:matchers)      { %w(FIXME TODO) }
 
         yield self if block_given?
 

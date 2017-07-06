@@ -7,11 +7,11 @@ module Batteries
     class Secret < ::Rake::TaskLib
       attr_accessor :name, :description, :secret_file, :generator
 
-      def initialize(name = :secret)
+      def initialize(name = :secret, options: {})
         @name = name
-        @secret_file = ".session_secret"
-        @description = "Generate a session secret in #{secret_file}"
-        @generator = method(:default_generator)
+        @secret_file = options.fetch(:secret_file) { ".session_secret" }
+        @description = options.fetch(:description) { default_description }
+        @generator = options.fetch(:generator) { method(:default_generator) }
 
         yield self if block_given?
 
@@ -28,6 +28,10 @@ module Batteries
       def default_generator
         require "securerandom"
         File.write(secret_file, SecureRandom.random_bytes(40))
+      end
+
+      def default_description
+        "Generate a session secret in #{secret_file}"
       end
     end
   end

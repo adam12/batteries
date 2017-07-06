@@ -8,10 +8,10 @@ module Batteries
     class Migrations < ::Rake::TaskLib
       attr_accessor :migrations_path, :database, :logger
 
-      def initialize
-        @migrations_path = "migrate"
-        @database = DB if defined?(DB)
-        @logger = Logger.new($stdout)
+      def initialize(options: {})
+        @migrations_path = options.fetch(:migrations_path) { "migrate" }
+        @database = options.fetch(:database) { DB if defined?(DB) }
+        @logger = options.fetch(:logger) { Logger.new($stdout) }
 
         yield self if block_given?
 
