@@ -63,6 +63,7 @@ module Batteries
       end
 
       def migrate(env, version)
+        ENV["RACK_ENV"] = env
         Sequel.extension :migration
         database.loggers << logger if logger
         Sequel::Migrator.apply(database, migrations_path, version)
