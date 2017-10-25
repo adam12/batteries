@@ -6,13 +6,14 @@ require "logger"
 module Batteries
   module Tasks
     class Migrations < ::Rake::TaskLib
-      attr_accessor :migrations_path, :logger
+      attr_accessor :migrations_path, :logger, :setup_hook
       attr_writer :database
 
       def initialize(options: {})
         self.migrations_path = options.fetch(:migrations_path) { "migrate" }
         self.database = options.fetch(:database) { DB if defined?(DB) }
         self.logger = options.fetch(:logger) { Logger.new($stdout) }
+        self.setup_hook = options[:setup_hook]
 
         yield self if block_given?
 
@@ -72,6 +73,7 @@ module Batteries
 
       def migrate(env, version)
         ENV["RACK_ENV"] = env
+        setup_hook.call if setup_hook.respond_to?(:call)
         Sequel.extension :migration
         database.loggers << logger if logger
         Sequel::Migrator.apply(database, migrations_path, version)
