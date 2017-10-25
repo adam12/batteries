@@ -6,12 +6,13 @@ require "logger"
 module Batteries
   module Tasks
     class Migrations < ::Rake::TaskLib
-      attr_accessor :migrations_path, :database, :logger
+      attr_accessor :migrations_path, :logger
+      attr_writer :database
 
       def initialize(options: {})
-        @migrations_path = options.fetch(:migrations_path) { "migrate" }
-        @database = options.fetch(:database) { DB if defined?(DB) }
-        @logger = options.fetch(:logger) { Logger.new($stdout) }
+        self.migrations_path = options.fetch(:migrations_path) { "migrate" }
+        self.database = options.fetch(:database) { DB if defined?(DB) }
+        self.logger = options.fetch(:logger) { Logger.new($stdout) }
 
         yield self if block_given?
 
@@ -59,6 +60,13 @@ module Batteries
         desc "Migrate production database to latest version"
         task :prod_up do
           migrate("production", nil)
+        end
+      end
+
+      def database
+        case @database
+        when String then Object.const_get(@database)
+        else @database
         end
       end
 
