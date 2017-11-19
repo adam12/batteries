@@ -14,3 +14,10 @@ Gem::Tasks.new
 
 # Dogfooding!
 Batteries::Tasks::Notes.new
+
+desc "Run tests"
+task :test do
+  warn "No tests written"
+end
+
+task :default => :test
