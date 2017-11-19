@@ -1,4 +1,6 @@
 ## master
+
+## 0.4.0 (2017-11-19)
 - Add `setup_hook` to run prior to migration command
 - Lazy-eval database value
 - Set `RACK_ENV` environment variable
