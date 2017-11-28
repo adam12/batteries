@@ -23,9 +23,21 @@ Or install it yourself as:
 
 ## Usage
 
-Incorporate the Batteries Rake tasks into your Rakefile
+Incorporate the Batteries Rake tasks into your Rakefile, using some sane defaults:
 
     Batteries::Tasks.new
+
+But you'll likely want something a bit more advanced, to suit your particular application layout:
+
+    Batteries::Tasks.new do |t|
+      t.migrations.database = "::DB"
+
+      # Customize for your application
+      t.migrations.setup_hook = proc do
+        require_relative "env"
+	require_relative "db"
+      end
+    end
 
 ## Contributing
 
