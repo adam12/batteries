@@ -75,6 +75,7 @@ module Batteries
       end
 
       def migrate(env, version)
+        require "sequel"
         ENV["RACK_ENV"] = env
         setup_hook.call if setup_hook.respond_to?(:call)
         Sequel.extension :migration

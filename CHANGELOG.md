@@ -1,5 +1,6 @@
 ## master
 - Migration database can now be a callable object
+- Require sequel before attempting migration
 
 ## 0.4.0 (2017-11-19)
 - Add `setup_hook` to run prior to migration command
