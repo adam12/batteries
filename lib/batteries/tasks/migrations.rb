@@ -65,9 +65,12 @@ module Batteries
       end
 
       def database
-        case @database
-        when String then Object.const_get(@database)
-        else @database
+        if @database.is_a?(String)
+          Object.const_get(@database)
+        elsif @database.respond_to?(:call)
+          @database.call
+        else
+          @database
         end
       end
 
